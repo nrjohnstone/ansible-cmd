@@ -67,6 +67,5 @@ COPY ./private_keys/*       /root/.ssh/
 RUN chmod 700 /root/.ssh/*
 
 WORKDIR /ansible/playbooks
- 
-#ENTRYPOINT ["ansible-playbook"]
+
 ENTRYPOINT ["/bin/bash"]
