@@ -1,6 +1,6 @@
 FROM alpine:3.7
  
-ENV ANSIBLE_VERSION 2.5.0
+ENV ANSIBLE_VERSION 3.4.0
  
 ENV BUILD_PACKAGES \
   bash \
@@ -63,6 +63,7 @@ ENV PATH /ansible/bin:$PATH
 ENV ANSIBLE_LIBRARY /ansible/library
 
 COPY ./private_keys/*       /root/.ssh/
+COPY ./secrets/* /root/secrets/
 
 RUN chmod 700 /root/.ssh/*
 
