@@ -62,11 +62,12 @@ ENV PYTHONPATH /ansible/lib
 ENV PATH /ansible/bin:$PATH
 ENV ANSIBLE_LIBRARY /ansible/library
 
-COPY ./private_keys/*       /root/.ssh/
-COPY ./secrets/* /root/secrets/
+COPY docker_init.sh /usr/local/bin/docker_init.sh
+RUN chmod +x /usr/local/bin/docker_init.sh 
 
-RUN chmod 700 /root/.ssh/*
+RUN mkdir /root/.ssh
+RUN mkdir /private_keys
 
 WORKDIR /ansible/playbooks
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["/usr/local/bin/docker_init.sh"]
