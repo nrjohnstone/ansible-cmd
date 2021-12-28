@@ -52,7 +52,9 @@ RUN set -x && \
     mkdir -p /etc/ansible /ansible && \
     echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts
- 
+
+RUN ansible-galaxy collection install community.docker:2.0.2
+
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING false
 ENV ANSIBLE_RETRY_FILES_ENABLED false
