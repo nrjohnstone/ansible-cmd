@@ -1,59 +1,62 @@
-FROM alpine:3.7
+FROM alpine:3.18
  
-ENV ANSIBLE_VERSION 3.4.0
- 
-ENV BUILD_PACKAGES \
-  bash \
-  curl \
-  tar \
-  openssh-client \
-  sshpass \
-  git \
-  python \
-  py-boto \
-  py-dateutil \
-  py-httplib2 \
-  py-jinja2 \
-  py-paramiko \
-  py-pip \
-  py-yaml \
-  ca-certificates
- 
-# If installing ansible@testing
-#RUN \
-#	echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> #/etc/apk/repositories
- 
-RUN set -x && \
-    \
-    echo "==> Adding build-dependencies..."  && \
-    apk --update add --virtual build-dependencies \
-      gcc \
-      musl-dev \
-      libffi-dev \
-      openssl-dev \
-      python-dev && \
-    \
-    echo "==> Upgrading apk and system..."  && \
-    apk update && apk upgrade && \
-    \
-    echo "==> Adding Python runtime..."  && \
-    apk add --no-cache ${BUILD_PACKAGES} && \
-    pip install --upgrade pip && \
-    pip install python-keyczar docker-py && \
-    \
-    echo "==> Installing Ansible..."  && \
-    pip install ansible==${ANSIBLE_VERSION} && \
-    \
-    echo "==> Cleaning up..."  && \
-    apk del build-dependencies && \
-    rm -rf /var/cache/apk/* && \
-    \
-    echo "==> Adding hosts for convenience..."  && \
+# ENV BUILD_PACKAGES \
+#   bash \
+#   curl \
+#   tar \
+#   openssh-client \
+#   sshpass \
+#   git \
+#   python \
+#   py-boto \
+#   py-dateutil \
+#   py-httplib2 \
+#   py-jinja2 \
+#   py-paramiko \
+#   py-pip \
+#   py-yaml \
+#   ca-certificates
+
+RUN apk --update --no-cache add \
+        ca-certificates \
+        git \
+        openssh-client \
+        openssl \
+        py3-cryptography \
+        py3-pip \
+        py3-yaml \
+        python3\
+        rsync \
+        sshpass
+
+RUN apk --update --no-cache add --virtual \
+        .build-deps \
+        build-base \
+        cargo \
+        curl \
+        libffi-dev \
+        openssl-dev \
+        python3-dev         
+
+RUN pip3 install --no-cache-dir --upgrade pip
+
+# ====== Install Ansible ======
+ENV ANSIBLE_VERSION 8.5.0
+
+RUN pip3 install --no-cache-dir --no-binary \
+        cffi \
+        ansible==${ANSIBLE_VERSION}
+
+RUN ansible-galaxy collection install community.docker:3.4.10
+
+RUN echo "==> Cleaning up..."  && \
+    apk del .build-deps && \
+    rm -rf /var/cache/apk/*
+
+RUN echo "==> Adding hosts for convenience..."  && \
     mkdir -p /etc/ansible /ansible && \
     echo "[local]" >> /etc/ansible/hosts && \
     echo "localhost" >> /etc/ansible/hosts
-
-RUN ansible-galaxy collection install community.docker:2.0.2
 
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING false
