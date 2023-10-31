@@ -1,21 +1,4 @@
 FROM alpine:3.18
- 
-# ENV BUILD_PACKAGES \
-#   bash \
-#   curl \
-#   tar \
-#   openssh-client \
-#   sshpass \
-#   git \
-#   python \
-#   py-boto \
-#   py-dateutil \
-#   py-httplib2 \
-#   py-jinja2 \
-#   py-paramiko \
-#   py-pip \
-#   py-yaml \
-#   ca-certificates
 
 RUN apk --update --no-cache add \
         ca-certificates \
@@ -63,9 +46,6 @@ ENV ANSIBLE_HOST_KEY_CHECKING false
 ENV ANSIBLE_RETRY_FILES_ENABLED false
 ENV ANSIBLE_ROLES_PATH /ansible/playbooks/roles
 ENV ANSIBLE_SSH_PIPELINING True
-ENV PYTHONPATH /ansible/lib
-ENV PATH /ansible/bin:$PATH
-ENV ANSIBLE_LIBRARY /ansible/library
 
 COPY docker_init.sh /usr/local/bin/docker_init.sh
 RUN chmod +x /usr/local/bin/docker_init.sh 
