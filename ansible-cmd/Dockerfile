@@ -32,6 +32,11 @@ RUN pip3 install --no-cache-dir --no-binary \
 
 RUN ansible-galaxy collection install community.docker:3.4.10
 
+RUN pip3 install pywinrm==0.4.3
+RUN pip3 install requests-credssp==2.0.0
+
+RUN apk add bash
+
 RUN echo "==> Cleaning up..."  && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/*
