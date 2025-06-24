@@ -41,7 +41,7 @@ RUN pip install cffi==1.16.0
 RUN pip install pywinrm==0.4.3
 RUN pip install requests-credssp==2.0.0
 
-ENV ANSIBLE_VERSION 8.5.0
+ENV ANSIBLE_VERSION 8.7.0
 
 RUN pip install ansible==${ANSIBLE_VERSION}
 
