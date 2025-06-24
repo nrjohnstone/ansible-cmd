@@ -2,7 +2,7 @@
 # Inspiration from the following image
 #   https://github.com/spurin/container-systemd/tree/ubuntu_22.04
 #
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Install systemd
 RUN apt-get update \
@@ -35,17 +35,13 @@ RUN apt-get install -y python3-yaml
 RUN apt-get install -y openssh-client
 RUN apt-get install -y sshpass
 
-RUN pip install --no-cache-dir --upgrade pip
+RUN pip install cffi==1.16.0 --break-system-packages
+RUN pip install pywinrm==0.4.3 --break-system-packages
+RUN pip install requests-credssp==2.0.0 --break-system-packages
 
-RUN pip install cffi==1.16.0
-RUN pip install pywinrm==0.4.3
-RUN pip install requests-credssp==2.0.0
+ENV ANSIBLE_VERSION 11.7.0
 
-ENV ANSIBLE_VERSION 9.13.0
-
-RUN pip install ansible==${ANSIBLE_VERSION}
-
-RUN ansible-galaxy collection install community.docker:3.4.10
+RUN pip install ansible==${ANSIBLE_VERSION} --break-system-packages
 
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING false
@@ -53,7 +49,6 @@ ENV ANSIBLE_RETRY_FILES_ENABLED false
 ENV ANSIBLE_ROLES_PATH /ansible/playbooks/roles
 ENV ANSIBLE_SSH_PIPELINING True
 
-RUN mkdir /root/.ssh
 RUN mkdir /private_keys
 
 RUN echo "==> Adding hosts for convenience..."  && \
