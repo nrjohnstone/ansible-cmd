@@ -39,7 +39,7 @@ RUN pip install cffi==1.16.0 --break-system-packages
 RUN pip install pywinrm==0.4.3 --break-system-packages
 RUN pip install requests-credssp==2.0.0 --break-system-packages
 
-ENV ANSIBLE_VERSION=11.13.0
+ENV ANSIBLE_VERSION=12.3.0
 
 RUN pip install ansible==${ANSIBLE_VERSION} --break-system-packages
 

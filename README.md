@@ -9,6 +9,8 @@ appropriate permissions on them.
 
 ## Usage ##
 
+Make sure the container-entrypoint.sh has LF line endings for linux.
+
 Run the powershell script "build.ps1" to build the nrjohnstone/ansible-cmd image.
 
 Before testing make sure you have the private keys you require copied into the ansible-cmd/private_keys directory.

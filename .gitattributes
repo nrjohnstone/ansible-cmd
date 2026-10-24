@@ -1,0 +1,9 @@
+# Always use LF for these file types
+*.sh        text eol=lf
+*.py        text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.json      text eol=lf
+
+ansible-cmd-ubuntu/**  text eol=lf
+ansible-cmd-alpine/**  text eol=lf
